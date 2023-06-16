@@ -1,0 +1,56 @@
+samples:  ["isolate1", "isolate2"]
+# cd ~/databases/ &&  mkdir -p NCBI_genomes/ && cd NCBI_genomes/ && update_blastdb.pl --source aws --decompress ${DATABABE_NAME}        
+# get a list of ${DATABASE_NAMES} -> update_blastdb.pl --showall
+# for prokaryotes DATABASE_NAME="ref_prok_rep_genomes" 
+# for virus DATABASE_NAME="ref_viruses_rep_genomes"
+GENOMEDB: "/home/jeffbrady/databases/NCBI_genomes/ref_prok_rep_genomes" # microbial genome database 
+ASSEMBLER: 'megahit' # "spades" or "megahit" 
+MODE: "reference" # or "denovo"
+# Library text sspace - bin/SSPACE/SSPACE_Standard_v3.0.pl
+ANNOTATOR: "prokka" # or "pgap"
+REF_ACCESSION:  CP027388 # "NC_000913.3" # Escherichia coli str. K-12 substr. MG1655 ;  ["CP031916", "CP027388", "CP044315", "NC_013353", "CP050498"]
+SPECIES: "E_coli"
+
+
+# Full paths to the specified programs
+programs_path:
+    multiqc: "/home/jeffbrady/anaconda3/envs/bioinfo/bin/multiqc"
+    fastqc: "/home/jeffbrady/anaconda3/envs/bioinfo/bin/fastqc"
+    parallel: "/home/jeffbrady/anaconda3/envs/bioinfo/bin/parallel"
+    trim_galore: "/home/jeffbrady/anaconda3/envs/bioinfo/bin/trim_galore"
+    cutadapt: "/home/jeffbrady/anaconda3/envs/bioinfo/bin/cutadapt"
+    trimmomatic: "/home/jeffbrady/anaconda3/envs/bioinfo/bin/trimmomatic"
+    seqkit: "/home/jeffbrady/anaconda3/envs/bioinfo/bin/seqkit"
+    makeblastdb: "/home/jeffbrady/anaconda3/envs/bioinfo/bin/makeblastdb"
+    blastn: "/home/jeffbrady/anaconda3/envs/bioinfo/bin/blastn"
+    blastp: "/home/jeffbrady/anaconda3/envs/bioinfo/bin/blastp"
+    spades: "/home/jeffbrady/anaconda3/envs/bioinfo/bin/spades.py"
+    quast: "/home/jeffbrady/anaconda3/envs/bioinfo/bin/quast.py"
+    pgap: "/home/jeffbrady/biyi/genome_assembly/pgap.py"
+    prokka: "/home/jeffbrady/anaconda3/envs/bioinfo/bin/prokka"
+
+
+# Set tool specific parameters
+parameters:
+   # Adators and primer trimming using cutadapt
+    cutadapt:
+        forward_primer: "AGRGTTYGATYMTGGCTCAG"
+        reverse_primer: "RGYTACCTTGTTACGACTT"  
+        minimum_length: 20 # retain only reads with length greater than this after quality filtering
+        quality_cutoff: 20,20 # trim base with bases with quailty less than 20 from the 5', and 3' regions
+    trimmomatic: 
+        adaptors: "/home/jeffbrady/anaconda3/envs/bioinfo/share/trimmomatic-0.39-1/adapters/Nextera_andTruseqPE-PE.fa" #"NexteraPE-PE.fa"
+        min_len: 20
+    blast:
+        dbname: "silva" # card_args  or args
+        dbtype: "nucl"
+        evalue: "1e-5"
+        coverage: "80"
+        identity: "95"
+        outformat: "\"6 qseqid sseqid stitle pident qlen length mismatch gapopen qstart qend sstart send evalue bitscore qcovs\""
+
+conda:
+    bioinfo:
+        env: "source activate /home/jeffbrady/anaconda3/envs/bioinfo/"
+        perl5lib: "export PERL5LIB=/home/jeffbrady/anaconda3/envs/bioinfo/lib/5.26.2"
+

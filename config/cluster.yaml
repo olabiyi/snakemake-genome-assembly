@@ -1,0 +1,30 @@
+__default__:
+    system: 'slurm'
+    account: "132773335440"
+    time: "12:00:00" # in minutes
+    mem: "10g" # in GB
+    threads: "10"
+    queue: "xlong" # gpu
+    nodes: "1"
+    
+
+Trim_primers:
+    mem: "60g" # in GB
+    threads: "28"
+ 
+Assemble_genome:
+    mem: "60g" # in GB
+    threads: "28" 
+
+Scaffold_assembly:
+    mem: "60g" # in GB
+    threads: "28"   
+ 
+BlastSeqs:
+    mem: "210g" # in GB
+    threads: "28"    
+    
+Annotate_genome:
+    mem: "60g" # in GB
+    threads: "28"
+    time: "17:00:00" 

@@ -1,0 +1,9 @@
+fasta:
+    class: File
+    location: genome.fasta
+submol:
+    class: file
+    location: genome_metadata.yaml
+
+
+
